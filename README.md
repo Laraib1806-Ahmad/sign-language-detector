@@ -1,33 +1,33 @@
-# 🤟 SignSpeak AI — Real-Time ASL Sign Language Detector
+# SignSpeak AI — Real-Time ASL Sign Language Detector
 
 SignSpeak AI is a full-stack application that recognizes American Sign Language (ASL) alphabet signs in real time using your webcam. A React frontend streams video frames to a Flask backend, which uses **MediaPipe** to extract hand landmarks and a **TensorFlow/Keras** neural network to classify the sign being shown.
 
 ---
 
-## ✨ Features
+## Features
 
-- 📷 **Live webcam capture** — no upload needed, everything runs from your browser
-- ✋ **21-point hand landmark detection** powered by MediaPipe's `HandLandmarker`
-- 🧠 **Trained Keras classifier** that recognizes the full ASL alphabet (A–Z) plus `space` and `del`
-- 📊 **Confidence score** shown for every prediction
-- 📝 **Sentence builder** — save detected letters into a running sentence
-- 🕒 **Prediction history** of the last 10 detected signs
-- 🎨 Clean, modern React UI (Vite + custom components)
-
----
-
-## 🧱 Tech Stack
-
-| Layer      | Technology                                                |
-|------------|-------------------------------------------------------------|
-| Frontend   | React 18, Vite, react-icons                                 |
-| Backend    | Flask, Flask-CORS                                            |
-| ML / CV    | MediaPipe (HandLandmarker), TensorFlow / Keras, scikit-learn, OpenCV, NumPy |
-| Model      | Feed-forward neural network trained on hand-landmark coordinates |
+- **Live webcam capture** — no upload needed, everything runs from your browser
+- **21-point hand landmark detection** powered by MediaPipe's `HandLandmarker`
+- **Trained Keras classifier** that recognizes the full ASL alphabet (A–Z) plus `space` and `del`
+- **Confidence score** shown for every prediction
+- **Sentence builder** — save detected letters into a running sentence
+- **Prediction history** of the last 10 detected signs
+- Clean, modern React UI (Vite + custom components)
 
 ---
 
-## 📁 Project Structure
+## Tech Stack
+
+| Layer    | Technology                                                                  |
+| -------- | --------------------------------------------------------------------------- |
+| Frontend | React 18, Vite, react-icons                                                 |
+| Backend  | Flask, Flask-CORS                                                           |
+| ML / CV  | MediaPipe (HandLandmarker), TensorFlow / Keras, scikit-learn, OpenCV, NumPy |
+| Model    | Feed-forward neural network trained on hand-landmark coordinates            |
+
+---
+
+## Project Structure
 
 ```
 sign_language/
@@ -57,7 +57,7 @@ sign_language/
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
 1. The **Camera** component captures a frame from the webcam every interval and sends it as a base64-encoded JPEG to the Flask backend (`POST /predict`).
 2. The backend decodes the image and runs **MediaPipe HandLandmarker** to extract 21 hand landmarks (x, y, z coordinates → 63 features).
@@ -67,7 +67,7 @@ sign_language/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -112,7 +112,7 @@ npm run dev
 
 The app will be available at **http://localhost:5173** (default Vite port).
 
-> ⚠️ The frontend currently calls the backend at a hardcoded `http://127.0.0.1:5000/predict` (see `frontend/src/components/Camera.jsx`). If you deploy the backend elsewhere, update this URL or move it into a `.env` variable (e.g. `VITE_API_URL`).
+> The frontend currently calls the backend at a hardcoded `http://127.0.0.1:5000/predict` (see `frontend/src/components/Camera.jsx`). If you deploy the backend elsewhere, update this URL or move it into a `.env` variable (e.g. `VITE_API_URL`).
 
 ### 4. Use it
 
@@ -123,28 +123,30 @@ The app will be available at **http://localhost:5173** (default Vite port).
 
 ---
 
-## 🧠 Model & Dataset
+## Model & Dataset
 
 - `landmarks_dataset.csv` contains 63 numeric features (21 landmarks × x, y, z) per row plus a `label` column, covering the letters **A–Z**, `space`, and `del`.
 - `asl_model.keras` is the trained classifier loaded by the backend at startup.
 - `label_encoder.pkl` maps the model's numeric output back to the original letter/label.
 
 If you want to retrain the model, you'll need to add a training script (e.g. `train.py`) that:
+
 1. Loads `landmarks_dataset.csv`
 2. Splits into train/test sets
 3. Trains a classifier (e.g. a small dense neural network)
 4. Fits and saves a `LabelEncoder` on the `label` column
 5. Saves the model with `model.save("asl_model.keras")`
 
-*(Not included in this repo — add your own script under `backend/` if you plan to retrain.)*
+_(Not included in this repo — add your own script under `backend/` if you plan to retrain.)_
 
 ---
 
-## 🔌 API Reference
+## API Reference
 
 ### `POST /predict`
 
 **Request body:**
+
 ```json
 {
   "image": "data:image/jpeg;base64,<base64-encoded-frame>"
@@ -152,6 +154,7 @@ If you want to retrain the model, you'll need to add a training script (e.g. `tr
 ```
 
 **Response:**
+
 ```json
 {
   "detected": true,
@@ -164,7 +167,7 @@ If no hand is detected or an error occurs, `detected` is `false` and `sign` is `
 
 ---
 
-## 🗺️ Roadmap / Ideas
+## Roadmap / Ideas
 
 - [ ] Move the backend URL into an environment variable for the frontend
 - [ ] Add a `train.py` script for reproducible model training
@@ -175,7 +178,7 @@ If no hand is detected or an error occurs, `detected` is `false` and `sign` is `
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome!
 
@@ -187,13 +190,13 @@ Contributions, issues, and feature requests are welcome!
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 - [MediaPipe](https://developers.google.com/mediapipe) for hand landmark detection
 - [TensorFlow / Keras](https://www.tensorflow.org/) for the classification model
